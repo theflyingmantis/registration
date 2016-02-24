@@ -18,7 +18,7 @@ def index(request):
 				q=student.objects.get(id1=id1)
 				if q.password==password:
 					request.session['s_logged'] = True
-					request.session['s_id'] = id1
+					request.session['s_id'] = q.id
 					#return render(request,'app/student.html')	#Make this page
 					return HttpResponse("Welcome Student")
 				else:
@@ -33,7 +33,7 @@ def index(request):
 				q1=faculty.objects.get(id1=id1)
 				if q1.password==password:
 					request.session['f_logged'] = True
-					request.session['f_id'] = id1
+					request.session['f_id'] = q1.id
 					return HttpResponse("Welcome Faculty")
 					#return render(request,'app/faculty.html')	#Make this page
 				else:
@@ -44,3 +44,11 @@ def index(request):
 			return render(request,'app/index.html',{'error':error})
 
 	return render(request,'app/index.html',{'error':error})
+
+# def student(request):
+# 	if request.session['s_logged']==True:
+		
+# 		#do something
+# 	else:
+# 		error="Please Login first"
+# 		return render(request,'app/index.html',{'error':error})
