@@ -1,0 +1,67 @@
+{% extends "app/base.html" %}
+{% block content %}
+	<center><h1>Student Page</h1></center>
+	<table border=1>
+	<tr><th>Payment Left</th><th>Amount</th></tr>
+		{%if mess_dues %}
+		<tr>
+			<td>Mess Dues</td>
+			<td>{{mess_dues}}</td>
+		</tr>
+		{%endif%}
+		{%if lib_dues%}
+		<tr>
+			<td>Library Dues</td>
+			<td>{{lib_dues}}</td>
+		</tr>
+		{%endif%}
+		{%if mess_fees %}
+		<tr>
+			<td>Mess Fees</td>
+			<td>{{mess_fees}}</td>
+		</tr>
+		{%endif%}
+		{%if reg_fees %}
+		<tr>
+			<td>Semester Fees</td>
+			<td>{{reg_fees}}</td>
+		</tr>
+		{%endif%}
+	</table>
+	<script>
+	
+function storeInSession(){
+    window.sessionStorage['submit'] = 'a';
+}
+
+function checkSubmitStatus(){
+    if(window.sessionStorage['submit']){
+        window.sessionStorage['submit'] = '';
+        location.reload();
+    }
+}
+checkSubmitStatus();
+	</script>
+	{%if mess_dues or lib_dues or reg_fees or mess_fees %}
+		<form method="POST" name="fees" onsubmit="storeInSession()">
+		{% csrf_token %}
+			<select name="type" required>
+			{%if mess_dues %}
+			<option value="mess_dues">Mess Dues</option>
+		    {%endif%}
+		    {%if mess_fees %}
+		     <option value="mess_fees">Mess Fees</option>
+		     {%endif%}
+		    {%if lib_dues %}
+		    <option value="lib_dues">Library Dues</option>
+		    {%endif%}
+		    {%if reg_fees %}
+		    <option value="reg_fees">Semester Fees</option>
+		    {%endif%}
+		    		<!-- Also Can look for Radio Buttons here . See later-->
+		  </select><br>
+		  <input type="submit" value="Pay">
+		</form>
+	{%endif%}
+
+{%endblock%}

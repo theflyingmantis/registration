@@ -21,7 +21,8 @@ class student(models.Model):
 class course(models.Model):
     name=models.CharField(max_length=30)
     code=models.CharField(max_length=10)
-    #students=models.ManyToManyField(student,blank=True)
+    students=models.ManyToManyField(student,blank=True)
+    #faculty_code=models.CharFiels(max_length=10)		Add this also. MUST
     faculty_name=models.CharField(max_length=30)
     note=models.CharField(max_length=100,null=True)
     def __str__(self):
@@ -31,7 +32,7 @@ class faculty(models.Model):
 	name=models.CharField(max_length=30)
 	id1=models.CharField(max_length=10)
 	password=models.CharField(max_length=30)
-	#courses=models.ManyToManyField(course,blank=True)
-	#request=models.ManyToManyField(student,blank=True)
+	courses=models.ManyToManyField(course,blank=True)
+	request=models.ManyToManyField(student,blank=True)
 	def __str__(self):
 		return self.name

@@ -3,11 +3,13 @@
 <center>
 <h1>Home Page</h1>
 </center>
-{% if error %}
-<script type="text/javascript">	
-alert('{{error}}');		
-</script>
-{% endif %}
+<h2>{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    {{ message }}<br>
+    {% endfor %}
+</div>
+{% endif %}</h2>
 <center>
 <font color="red">
 	{%if error %}
@@ -25,4 +27,9 @@ Type:<select name="type" required>
   </select><br>
 <input type="submit" value="Login">
 </form>
+{% if error %}
+<script type="text/javascript">	
+alert('{{error}}');		
+</script>
+{% endif %}
 {% endblock %}
