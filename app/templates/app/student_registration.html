@@ -1,0 +1,27 @@
+{% extends "app/base.html" %}
+{% block content %}
+<form method="POST" name="registration" >
+{% csrf_token %}
+<select name="type" required>
+{%for course in courses%}
+<option value="{{course.code}}">{{course.code}} - {{course.name}}</option>
+{%endfor%}
+</select>
+<input type="submit" value="Register">
+</form>
+<table border=1>
+<tr><th>Course Code</th><th>Course Name</th><th>Course Instructor</th><th>About the course</th></tr>
+{%for course in courses%}
+<tr><td>{{course.code}}</td><td>{{course.name}}</td><td>{{course.faculty_name}}</td><td>{{course.note}}</td></tr>
+{%endfor%}
+</table>
+<h2>Compulsary Courses</h2>
+<table border=1>
+<tr><th>Course Code</th><th>Course Name</th><th>Course Instructor</th><th>About the course</th></tr>
+{%for c in cm_courses%}
+<tr>
+<tr><td>{{c.code}}</td><td>{{c.name}}</td><td>{{c.faculty_name}}</td><td>{{c.note}}</td></tr>
+</tr>
+{%endfor%}
+</table>
+{%endblock%}

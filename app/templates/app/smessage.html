@@ -1,0 +1,17 @@
+{% extends "app/base.html" %}
+{% block content %}
+<table border=1>
+<tr><th>Sender</th><th>Message</th><th>Delete</th></tr>
+{%for message in msgs%}
+<tr>
+<td>{{message.sender}}</td>
+<td>{{message.msg}}</td>
+<form name='msg_del' method="POST">
+{% csrf_token %}
+<td><input type="submit" value="Delete"></td>
+<input type="hidden" value="{{message.sender}}" name="sender">
+<input type="hidden" value="{{message.msg}}" name="msg_value">
+</form>
+{%endfor%}
+</table>
+{%endblock%}

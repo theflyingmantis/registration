@@ -1,0 +1,33 @@
+{% extends "app/base.html" %}
+{% block content %}
+<h1>Welcome Faculty</h1><br>
+<h2>Request table</h2>
+<table border=1>
+<tr><th>Name</th>
+<th>Branch</th>
+<th>Semester</th>
+<th>Course Name</th>
+<th>Eligible for Course</th>
+<th>Any message</th>
+
+</tr>
+{%for request in requests%}
+<tr>
+	<td>{{request.name}}</td>
+	<td>{{request.branch}}</td>
+	<td>{{request.semester}}</td>
+	<td>{{request.course_name}}</td>
+	<form name='request' method="POST">
+	{% csrf_token %}
+		<td><select name="type" required>
+		<option value="yes">Yes</option>
+		<option value="no">No</option></select></td>
+		<td><input type="text" name="message" placeholder="Any message for {{request.name}}?"></td>
+		<td><input type="submit" value="Submit"></td>
+		<input type="hidden" name="name" value="{{request.id1}}">
+		<input type="hidden" name="cname" value="{{request.course_name}}">
+	</form>
+</tr>
+{%endfor%}
+</table>
+{%endblock%}
