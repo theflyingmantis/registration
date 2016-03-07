@@ -23,7 +23,10 @@ class student(models.Model):
 class message(models.Model):
 	receiver=models.CharField(max_length=30)
 	sender=models.CharField(max_length=30)
+	sname=models.CharField(max_length=30,blank=True)
 	msg=models.CharField(max_length=1000)
+	def __str__(self):
+		return self.msg+" "+self.sname
 
 class course(models.Model):
     name=models.CharField(max_length=30)

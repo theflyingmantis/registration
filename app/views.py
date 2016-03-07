@@ -72,9 +72,16 @@ def facultyp(request):
 			else:
 				q2=request1.objects.get(id1=id1,course_name=cname)
 				q2.delete()
-			msg=request.POST.get('msg','')
-			n1=message(receiver=id1,sender=pk,msg=msg)
-			n1.save()
+			msg=request.POST.get('message','')
+			if msg!='':
+				sname=fac.name#Sender's Name
+				n1=message(receiver=id1,sender=pk,msg=msg,sname=sname)
+				n1.save()
+			else:
+				sname=fac.name
+				msg1="Request Declined for Elective."
+				n1=message(receiver=id1,sender=pk,msg=msg1,sname=sname)
+				n1.save()
 		return render(request,'app/facultyp.html',{'requests':requests})
 	else:
 		messages.success(request, 'Please Login First')
@@ -87,7 +94,7 @@ def smessage(request):
 		if request.method=="POST":
 			sender=request.POST.get('sender', '')
 			value=request.POST.get('msg_value','')
-			q2=message.objects.get(sender=sender,msg=value)
+			q2=message.objects.filter(sender=sender,msg=value)
 			q2.delete()
 		return render(request,'app/smessage.html',{'msgs':q1})
 	else:
@@ -182,10 +189,12 @@ def studentc(request):
 					cname=q.name
 					fcode=q.faculty_code
 					q1=faculty.objects.get(id1=fcode)
-					a1=request1(id1=pk1,course_name=cname)	#Much more can be passed here !! Ajeet's object can be :P
+					sdetail=student.objects.get(id=pk1)
+					a1=request1(id1=pk1,course_name=cname,name=sdetail.name,semester=sdetail.semester,branch=sdetail.branch,email=sdetail.email)	#Much more can be passed here !! Ajeet's object can be :P
 					a1.save()
 					q1.requests.add(a1)
 					q1.save()
+					messages.success(request,"Request sent!")
 		return render(request,'app/student_registration.html',{'courses':courses,'cm_courses':cm_courses})
 	else:
 		messages.success(request, 'Complete your payment process to register for courses')

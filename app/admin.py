@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import *
-admin.site.site_header = 'IIT Jodhpur'
+admin.site.site_header = 'IIT Jodhpur Admin'
 admin.site.register(student)
 admin.site.register(course)
 admin.site.register(faculty)

@@ -4,7 +4,7 @@
 <tr><th>Sender</th><th>Message</th><th>Delete</th></tr>
 {%for message in msgs%}
 <tr>
-<td>{{message.sender}}</td>
+<td>Dr. {{message.sname}}</td>
 <td>{{message.msg}}</td>
 <form name='msg_del' method="POST">
 {% csrf_token %}
