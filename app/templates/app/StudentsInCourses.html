@@ -1,0 +1,18 @@
+{% extends "app/base.html" %}
+{% block content %}
+<div class="container">
+<table>
+	<tr><th>Name</th>
+	<th>Roll No</th>
+	<th>E-mail</th>
+	</tr>
+{%for s in students%}
+<tr>
+	<td>{{s.name}}</td>
+	<td>{{s.id1}}</td>
+	<td>{{s.email}}</td>
+</tr>
+{%endfor%}
+</table>
+</div>
+{% endblock %}

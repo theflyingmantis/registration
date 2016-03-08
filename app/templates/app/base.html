@@ -2,21 +2,57 @@
 <html>
 <head>
 	<title>IIT Jodhpur</title>
+<!-- 	  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script> -->
+   	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	
-</head>
-<body>
+	<link type="text/css" rel="stylesheet" href="{% static 'app/css/materialize.css' %}"  media="screen,projection"/>
 
+	<!--Let browser know website is optimized for mobile-->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<style>
+	img.ex1{margin-left: 1.5cm;
+		margin-top: 0.5cm;}
+    body{
+      background-size:cover;
+    }
+    ::-webkit-input-placeholder {
+   color: green;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: green;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: green;  
+}
+
+:-ms-input-placeholder {  
+   color: yellow;  
+}
+	</style>
+</head>
+<body background="{% static 'app/images/1.jpg'%}">
+<img class="ex1" src="{% static 'app/images/IITJ_Logo.png'%}" height=100 width=100 margin-left="20px">
+<script type="text/javascript" src="{% static 'app/jquery-2.1.1.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/materialize.js' %}"></script>
 {% block content %}{% endblock %}
 <center>
-<h3>Made by TheFlyingMantis<br>
-</h3><br>
 <h2>{% if messages %}
-<div class="messages">BASE 
+<div class="messages">
     {% for message in messages %}
     {{ message }}<br>
     {% endfor %}
 </div>
 {% endif %}</h2>
 </center>
+
+  <script>
+     $(document).ready(function() {
+        $('select').material_select();
+    });
+  </script>
 </body>
 </html>

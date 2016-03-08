@@ -20,6 +20,12 @@ class student(models.Model):
 		a=self.name
 		return a
 
+# class freeze(models.Model):
+# 	status=models.CharField(max_length=30,default="U")
+# 	def __str__(self):
+# 		a=self.status
+# 		return a
+
 class message(models.Model):
 	receiver=models.CharField(max_length=30)
 	sender=models.CharField(max_length=30)
@@ -35,10 +41,22 @@ class course(models.Model):
     faculty_code=models.CharField(max_length=10,null=True)		
     faculty_name=models.CharField(max_length=30)
     note=models.CharField(max_length=100,null=True)
+    ltp=models.CharField(max_length=10,null=True)
     def __str__(self):
         return self.name
 
 class fulldetail(models.Model):
+	id1=models.IntegerField()
+	name=models.CharField(max_length=30,null=True)
+	semester=models.IntegerField(null=True)
+	branch=models.CharField(max_length=10,null=True)
+	courses=models.ManyToManyField(course,blank=True)
+	def __str__(self):
+		name=student.objects.get(pk=self.id1)
+		return name.name
+
+
+class final_fulldetail(models.Model):
 	id1=models.IntegerField()
 	courses=models.ManyToManyField(course,blank=True)
 	def __str__(self):
@@ -52,6 +70,7 @@ class request1(models.Model):
     branch=models.CharField(max_length=10,null=True)
     email=models.CharField(max_length=30,null=True)
     course_name=models.CharField(max_length=30)
+    ctype=models.CharField(max_length=30,null=True)
     def __str__(self):
     	name=student.objects.get(pk=self.id1)
     	return name.name+" * "+self.course_name

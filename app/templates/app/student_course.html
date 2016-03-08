@@ -1,0 +1,10 @@
+{% extends "app/base.html" %}
+{% block content %}
+<div class="container">
+<div class="collection">
+{%for c in courses%}
+<a href="/student_course/{{c.code}}" class="collection-item">{{c.name}}</a>
+{%endfor%}
+</div>
+</div>
+{% endblock %}

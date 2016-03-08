@@ -1,0 +1,25 @@
+{% extends "app/base.html" %}
+{% block content %}
+Mentor: {{mentor.name}}
+<div class="container">
+<table border=1>
+<tr>
+<th>Code</th>
+<th>Course Name</th>
+<th>L-T-P-[C]</th>
+</tr>
+{%for c in courses%}
+<tr>
+<td>{{c.code}}</td>
+<td>{{c.name}}</td>
+<td>{{c.ltp}}</td>
+</tr>
+{%endfor%}
+</table>
+<form name="final" method="POST">
+{% csrf_token %}
+<!-- <input type="radio" name="type" value="accept">Accept
+<input type="radio" name="type" value="reject">Reject -->
+<input type="submit" value="Send Request">
+</form></div>
+{%endblock%}

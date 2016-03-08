@@ -1,0 +1,25 @@
+{% extends "app/base.html" %}
+{% block content %}
+<!-- <form method="POST">
+{%csrf_token%}
+	<div class="switch">
+    <label>
+      <font color="red">Unfreeze</font>
+      <input type="checkbox" name='type'>
+      <span class="lever"></span>
+      <font color="green">freeze</font>
+    </label>
+  </div>
+	<input type="submit" value="Freeze/Unfreeze Registration">
+</form> -->
+  <h2>Registration Done for these students :-</h2>
+<table>
+{%for s in students%}
+<tr><td>{{s.id1}}</td>
+<td>{{s.name}}</td>
+<td>{{s.email}}</td>
+</tr>
+{%endfor%}
+</table>
+
+{% endblock %}

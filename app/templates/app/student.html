@@ -1,8 +1,21 @@
 {% extends "app/base.html" %}
 {% block content %}
-	<center><h1>Student Page</h1></center>
-	<table border=1>
+
+<nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo">Logo</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="sass.html">Sass</a></li>
+        <li><a href="badges.html">Components</a></li>
+        <li><a href="collapsible.html">JavaScript</a></li>
+      </ul>
+    </div>
+  </nav>
+	<h5>Welcome {{student.name}}</h5>
+	<table class="striped">
+	{%if mess_dues or lib_dues or reg_fees or mess_fees %}
 	<tr><th>Payment Left</th><th>Amount</th></tr>
+	{%endif%}
 		{%if mess_dues %}
 		<tr>
 			<td>Mess Dues</td>

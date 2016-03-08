@@ -1,0 +1,26 @@
+{% extends "app/base.html" %}
+{% block content %}
+<div class="container">
+<script>
+	function func()
+	{
+		window.print();
+	}
+</script>
+<table border=1>
+<tr>
+<th>Code</th>
+<th>Course Name</th>
+<th>L-T-P-[C]</th>
+</tr>
+{%for c in courses%}
+<tr>
+<td>{{c.code}}</td>
+<td>{{c.name}}</td>
+<td>{{c.ltp}}</td>
+</tr>
+{%endfor%}
+</table>
+<h2>Request granted by Dr.{{mentor.name}}</h2>
+<button onclick="func()">Print</button></div>
+{%endblock%}

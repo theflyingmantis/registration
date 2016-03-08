@@ -9,6 +9,8 @@ def index(request):
 	c = {}
 	error=None
 	c.update(csrf(request))
+	request.session['freeze']=False
+	request.session['admin_logged'] = False
 	request.session['f_logged'] = False
 	request.session['s_logged'] = False
 	request.session['money_paid'] = False
@@ -50,6 +52,34 @@ def index(request):
 
 	return render(request,'app/index.html',{'error':error})
 
+def admin_login(request):
+	if request.method=="POST":
+		name=request.POST.get('name', '')
+		password=request.POST.get('password', '')
+		if name=="admin" and password=="admin":
+			request.session['admin_logged'] = True
+			return redirect('/admin_settings')
+		else:
+			messages.success(request, 'Wrong Username/Password')
+	return render(request,'app/admin_login.html')
+
+def admin_settings(request):
+	if request.session['admin_logged'] == True:
+		students=student.objects.filter(reg_done=1)
+		# if request.method=="POST":
+		# 	type1=request.POST.get('type', '')
+		# 	if type1=="on":
+		# 		request.session['freeze']=True
+		# 		messages.success(request,"Freeze Registration")
+		# 	else:
+		# 		request.session['freeze']=False
+		# 		messages.success(request,"Unfreezed Registration")
+		return render(request,'app/admin_settings.html',{'students':students})
+	else:
+		messages.success(request, '@ Admin. Please Login first to authenticate yourself !')
+		return redirect('/')
+
+
 def facultyp(request):
 	if request.session['f_logged']==True:
 		pk=request.session['f_id']
@@ -61,28 +91,109 @@ def facultyp(request):
 			type1=request.POST.get('type', '')
 			id1=request.POST.get('name', '')
 			cname=request.POST.get('cname', '')
-			print id1+" "+cname
-			if type1=="yes":
-				q1=fulldetail.objects.get(id1=id1)
-				c1=course.objects.get(name=cname)
-				q1.courses.add(c1)
-				q1.save()
-				q2=request1.objects.get(id1=id1,course_name=cname)
-				q2.delete()
-			else:
-				q2=request1.objects.get(id1=id1,course_name=cname)
-				q2.delete()
+			print "tmp : " + request.POST.get('tmp', '')
+			# print id1+" "+cname
+			# print type1
 			msg=request.POST.get('message','')
+			if type1=="on":
+				print "YES is there"
+				try:
+					q1=fulldetail.objects.get(id1=id1)
+					c1=course.objects.get(name=cname)
+					q1.courses.add(c1)
+					q1.save()
+				except ObjectDoesNotExist:
+					q2=request1.objects.get(id1=id1,course_name=cname)
+					q2.delete()
+			else:
+				print "NO is there"
+				q2=request1.objects.get(id1=id1,course_name=cname)
+				q2.delete()
+				if msg=='':
+					sname=fac.name#Sender's Name
+					msg="Request Declined for "+c1.name
+					n1=message(receiver=id1,sender=pk,msg=msg,sname=sname)
+					n1.save()
+			
+			print "msg: " + msg
 			if msg!='':
 				sname=fac.name#Sender's Name
 				n1=message(receiver=id1,sender=pk,msg=msg,sname=sname)
 				n1.save()
+			# else:
+			# 	sname=fac.name
+			# 	msg1="Request Declined for Elective."#***********************************DOUBT...why so
+			# 	n1=message(receiver=id1,sender=pk,msg=msg1,sname=sname)
+			# 	n1.save()
+		return render(request,'app/facultyp.html',{'requests':requests,'fac':fac.name})
+	else:
+		messages.success(request, 'Please Login First')
+		return redirect('/')
+
+def student_course(request):
+	if request.session['f_logged']==True:
+		pk=request.session['f_id']
+		fac=faculty.objects.get(pk=pk)
+		c1=fac.courses.all()
+		print c1
+		return render(request,'app/student_course.html',{'courses':c1})
+
+	else:
+		messages.success(request, 'Please Login First')
+		return redirect('/')
+		
+def StudentsInCourse(request,name):
+	if request.session['f_logged']==True:
+		pk=request.session['f_id']
+		crs=course.objects.get(code=name)
+		students=crs.students.all()
+		return render(request,'app/StudentsInCourses.html',{'students':students})
+	else:
+		messages.success(request, 'Please Login First')
+		return redirect('/')
+
+
+def facultyc(request):
+	if request.session['f_logged']==True:
+		pk=request.session['f_id']
+		fac=faculty.objects.get(pk=pk)
+		m_request=fac.fulldetails.all()
+		return render(request,'app/facultyc.html',{'requests':m_request})
+	else:
+		messages.success(request, 'Please Login First')
+		return redirect('/')
+
+
+def ffinal(request,id1):
+	if request.session['f_logged']==True:
+		pk=request.session['f_id']
+		fac=faculty.objects.get(pk=pk)
+		s1=student.objects.get(pk=id1)
+		q2=fulldetail.objects.get(id1=id1)
+		q3=q2.courses.all()
+		if request.method=="POST":
+			type1=request.POST.get('type', '')
+			msg=request.POST.get('msg_mentor','')
+			if type1=='on':
+				d1=final_fulldetail(id1=q2.id1)
+				d1.save()
+				for c in q3:
+					d1.courses.add(c)
+				d1.save()
+				s1.reg_done=1
+				s1.save()
+				for c in q3:
+					c.students.add(s1)
+				q2.delete()
 			else:
-				sname=fac.name
-				msg1="Request Declined for Elective."
-				n1=message(receiver=id1,sender=pk,msg=msg1,sname=sname)
+				q2.delete()
+			if msg!='':
+				n1=message(receiver=id1,sender=pk,msg=msg,sname=fac.name)
 				n1.save()
-		return render(request,'app/facultyp.html',{'requests':requests})
+			messages.success(request,'Status submitted.')
+			return redirect('/facultyc')
+
+		return render(request,'app/ffinal.html',{'courses':q3})
 	else:
 		messages.success(request, 'Please Login First')
 		return redirect('/')
@@ -127,14 +238,16 @@ def studentp(request):
 			messages.success(request,"All dues cleared and fees paid! You can register for courses now")
 			request.session['money_paid'] = True
 			redirect('/studentc')
-		return render(request,'app/student.html',{'mess_dues':mess_dues,'mess_fees':mess_fees,'lib_dues':lib_dues,'reg_fees':reg_fees})
+		return render(request,'app/student.html',{'student':q,'mess_dues':mess_dues,'mess_fees':mess_fees,'lib_dues':lib_dues,'reg_fees':reg_fees})
 		#do something
 	else:
 		messages.success(request, 'Please Login First')
 		return redirect('/')
 
+
+
 def studentc(request):
-	if request.session['money_paid']==True:
+	if request.session['money_paid']==True and request.session['freeze']==False:
 		c = {}	
 		c.update(csrf(request))
 		courses=course.objects.all()
@@ -175,6 +288,7 @@ def studentc(request):
 			q2.save()
 		if request.method=="POST":
 			code=request.POST.get('type', '')
+			type1=request.POST.get('type1','')
 			flag=True
 			try:
 				q3=request1.objects.get(id1=pk1,course_name=course.objects.get(code=code).name)
@@ -199,6 +313,86 @@ def studentc(request):
 	else:
 		messages.success(request, 'Complete your payment process to register for courses')
 		return redirect('/studentp')
+
+def sfinal(request):
+	if request.session['money_paid']==True and request.session['freeze']==False:	#add here if registration is complete. If yes - redirect to other page
+		id1=request.session['s_id']
+		
+		s1=student.objects.get(pk=id1)
+		if s1.reg_done==1:
+			return redirect('/confirmed')
+		sem=s1.semester
+		q1=branch_mentor.objects.get(branch=s1.branch)
+		
+		if sem==1:
+			mentor=q1.sem1
+		if sem==2:
+			mentor=q1.sem2
+		if sem==3:
+			mentor=q1.sem3
+		if sem==4:
+			mentor=q1.sem4
+		if sem==5:
+			mentor=q1.sem5
+		if sem==6:
+			mentor=q1.sem6
+		if sem==7:
+			mentor=q1.sem7
+		if sem==8:
+			mentor=q1.sem8
+		mentor1=mentor.all()
+		q2=fulldetail.objects.get(id1=id1)
+		q3=q2.courses.all()
+		if request.method=="POST":
+			messages.success(request,"Request sent to Faculty Advisor")
+			f1=faculty.objects.get(id1=mentor1[0].id1)
+			f1.fulldetails.add(q2)
+		return render(request,'app/sfinal.html',{'courses':q3,'mentor':mentor1[0]})
+	else:
+		messages.success(request, 'Complete your payment process to register for courses')
+		return redirect('/studentp')
+
+def confirmed(request):
+	if request.session['money_paid']==True:
+		id1=request.session['s_id']
+		s1=student.objects.get(pk=id1)
+		sem=s1.semester
+		q1=branch_mentor.objects.get(branch=s1.branch)
+		
+		if sem==1:
+			mentor=q1.sem1
+		if sem==2:
+			mentor=q1.sem2
+		if sem==3:
+			mentor=q1.sem3
+		if sem==4:
+			mentor=q1.sem4
+		if sem==5:
+			mentor=q1.sem5
+		if sem==6:
+			mentor=q1.sem6
+		if sem==7:
+			mentor=q1.sem7
+		if sem==8:
+			mentor=q1.sem8
+		mentor1=mentor.all()
+		q2=final_fulldetail.objects.get(id1=id1)
+		q3=q2.courses.all()
+		return render(request,'app/reg_complete.html',{'courses':q3,'mentor':mentor1[0]})
+	else:
+		messages.success(request, 'Complete your payment process first')
+		return redirect('/studentp')
+
+
+def logout_a(request):
+	error=None
+	if request.session['a_logged']==True:
+		del request.session['a_logged']
+		messages.success(request,"Thanks for using portal!")
+	else:
+		messages.success(request,"Login first")
+	return redirect('/')
+
 
 def logout_s(request):
 	error=None

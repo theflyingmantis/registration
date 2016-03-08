@@ -1,16 +1,9 @@
-{% extends "base.html" %}
+{% extends "app/base.html" %}
 {% block content %}
 <center>
-<h1>Home Page</h1>
+<h2>Sign In</h2><br>
 </center>
-<h2>{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    {{ message }}<br>
-    {% endfor %}
-</div>
-{% endif %}</h2>
-<center>
+
 <font color="red">
 	{%if error %}
 	{{error}}
@@ -19,13 +12,14 @@
 
 <form method="POST" name="login">
 {% csrf_token %}
+ <div class="container">
 Enter LDAP id:<input type="text" name="id" placeholder="Enter LDAP id" required><br>
 Password:<input type="password" name="password" placeholder="Password" required><br>
-Type:<select name="type" required>
+Role:<select name="type" required>
     <option value="student">Student</option>
     <option value="faculty">Faculty</option>		<!-- Also Can look for Radio Buttons here . See later-->
   </select><br>
-<input type="submit" value="Login">
+<center><input type="submit" value="Login"></div></center>
 </form>
 {% if error %}
 <script type="text/javascript">	

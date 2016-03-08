@@ -1,0 +1,31 @@
+{% extends "app/base.html" %}
+{% block content %}
+<h2>Courses</h2>
+<table class="striped"><tr>
+	<th>Course Code</th>
+	<th>Course Name</th>
+	<th>L-T-P [C]</th>
+</tr>
+	{%for c in courses%}
+	<tr>
+		<td>{{c.code}}</td>
+		<td>{{c.name}}</td>
+		<td>{{c.ltp}}</td>
+	</tr>
+	{%endfor%}
+	</table><br><br>
+	<form name="final1" method="POST">
+{% csrf_token %}
+<div class="switch">
+    <label>
+      <font color="red">Reject</font>
+      <input type="checkbox" name='type'>
+      <span class="lever"></span>
+      <font color="green">Accept</font>
+    </label>
+  </div>
+<br>
+Message/Comment<input type="text" name="msg_mentor"><br><input type="submit" value="Submit">
+</form>
+
+{%endblock%}
