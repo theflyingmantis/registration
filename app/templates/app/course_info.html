@@ -13,24 +13,13 @@
       </ul>
     </div>
   </nav>
-<div class="container">
-<h4>Messages from Faculty</h4>
-{%if msgs%}
-<table class="striped">
-<tr><th>Sender</th><th>Message</th><th>Delete</th></tr>
-{%for message in msgs%}
-<tr>
-<td>Dr. {{message.sname}}</td>
-<td>{{message.msg}}</td>
-<form name='msg_del' method="POST">
-{% csrf_token %}
-<td><input type="submit" value="Delete"></td>
-<input type="hidden" value="{{message.sender}}" name="sender">
-<input type="hidden" value="{{message.msg}}" name="msg_value">
-</form>
-</tr>
+ <div class="container">
+<h4>Courses</h4><br>
+<table class="striped" border=1>
+<tr><th>Course Code</th><th>Course Name</th><th>Course Instructor</th><th>About the course</th></tr>
+{%for course in courses%}
+<tr><td>{{course.code}}</td><td>{{course.name}}</td><td>{{course.faculty_name}}</td><td>{{course.note}}</td></tr>
 {%endfor%}
 </table>
-{%endif%}
 </div>
 {%endblock%}

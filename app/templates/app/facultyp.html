@@ -1,9 +1,23 @@
 {% extends "app/base.html" %}
 {% block content %}
-<h1>Welcome {{fac}}</h1><br>
-<h2>Request table</h2>
-<div class="container">
-<table border=1>
+<nav>
+    <div class="nav-wrapper">
+      IIT Jodhpur Registration Portal
+         <div class="brand-logo center">Dr. {{fac}}</div>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li class="active"><a href="/facultyp">Elective Request</a></li>
+        <li><a href="/facultyc">Mentor Request</a></li>
+        <li><a href="/student_course">Course Teaching</a></li>
+        <li><a href="/logout_f">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+<h4>Welcome {{fac}}</h4><br>
+<h5>Elective Requests</h5>
+
+{%if requests%}
+<table class="striped">
 <tr><th>Name</th>
 <th>Branch</th>
 <th>Semester</th>
@@ -29,7 +43,7 @@
       <span class="lever"></span>
       <font color="green">Yes</font>
     </label>
-  </div>
+
 		</td>
 		<td><input type="text" name="message" placeholder="Any message for {{request.name}}?"></td>
 		<td><input type="submit" value="Submit"></td>
@@ -39,9 +53,11 @@
 </tr>
 {% endfor %}
 </table></div>
+{%endif%}
   <script>
      $(document).ready(function() {
         $('select').material_select();
     });
   </script>
+  </div>
 {% endblock %}

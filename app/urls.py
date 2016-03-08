@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^admin_login/$',views.admin_login,name='admin_login'),
     url(r'^admin_settings/$',views.admin_settings,name='admin_settings'),
     url(r'^logout_a/$',views.logout_a,name="logout_a"),
+    url(r'^course_info/$',views.course_info,name="course_info"),
 ]
 
 

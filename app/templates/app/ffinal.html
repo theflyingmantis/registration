@@ -1,6 +1,19 @@
 {% extends "app/base.html" %}
 {% block content %}
-<h2>Courses</h2>
+<nav>
+    <div class="nav-wrapper">
+      IIT Jodhpur Registration Portal
+      <div class="brand-logo center">Dr. {{fac.name}}</div>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li ><a href="/facultyp">Elective Request</a></li>
+        <li class="active"><a href="/facultyc">Mentor Request</a></li>
+        <li><a href="/course_info">Courses</a></li>
+        <li><a href="/logout_f">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="container">
+<h3>Courses registered by {{student.name}}</h3>
 <table class="striped"><tr>
 	<th>Course Code</th>
 	<th>Course Name</th>
@@ -27,5 +40,5 @@
 <br>
 Message/Comment<input type="text" name="msg_mentor"><br><input type="submit" value="Submit">
 </form>
-
+</div>
 {%endblock%}

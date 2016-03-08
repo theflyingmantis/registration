@@ -102,6 +102,8 @@ def facultyp(request):
 					c1=course.objects.get(name=cname)
 					q1.courses.add(c1)
 					q1.save()
+					q2=request1.objects.get(id1=id1,course_name=cname)
+					q2.delete()
 				except ObjectDoesNotExist:
 					q2=request1.objects.get(id1=id1,course_name=cname)
 					q2.delete()
@@ -136,7 +138,7 @@ def student_course(request):
 		fac=faculty.objects.get(pk=pk)
 		c1=fac.courses.all()
 		print c1
-		return render(request,'app/student_course.html',{'courses':c1})
+		return render(request,'app/student_course.html',{'courses':c1,'fac':fac})
 
 	else:
 		messages.success(request, 'Please Login First')
@@ -145,9 +147,10 @@ def student_course(request):
 def StudentsInCourse(request,name):
 	if request.session['f_logged']==True:
 		pk=request.session['f_id']
+		fac=faculty.objects.get(pk=pk)
 		crs=course.objects.get(code=name)
 		students=crs.students.all()
-		return render(request,'app/StudentsInCourses.html',{'students':students})
+		return render(request,'app/StudentsInCourses.html',{'fac':fac,'students':students})
 	else:
 		messages.success(request, 'Please Login First')
 		return redirect('/')
@@ -158,7 +161,7 @@ def facultyc(request):
 		pk=request.session['f_id']
 		fac=faculty.objects.get(pk=pk)
 		m_request=fac.fulldetails.all()
-		return render(request,'app/facultyc.html',{'requests':m_request})
+		return render(request,'app/facultyc.html',{'fac':fac,'requests':m_request})
 	else:
 		messages.success(request, 'Please Login First')
 		return redirect('/')
@@ -193,7 +196,7 @@ def ffinal(request,id1):
 			messages.success(request,'Status submitted.')
 			return redirect('/facultyc')
 
-		return render(request,'app/ffinal.html',{'courses':q3})
+		return render(request,'app/ffinal.html',{'student':s1,'fac':fac,'courses':q3})
 	else:
 		messages.success(request, 'Please Login First')
 		return redirect('/')
@@ -235,7 +238,7 @@ def studentp(request):
 				q.reg_fees=0
 				q.save()
 		if q.mess_dues==0 and q.mess_fees==0 and q.reg_fees==0 and q.lib_dues==0:
-			messages.success(request,"All dues cleared and fees paid! You can register for courses now")
+			messages.success(request,"All dues cleared and fees paid! You can register for courses now.")
 			request.session['money_paid'] = True
 			redirect('/studentc')
 		return render(request,'app/student.html',{'student':q,'mess_dues':mess_dues,'mess_fees':mess_fees,'lib_dues':lib_dues,'reg_fees':reg_fees})
@@ -314,6 +317,7 @@ def studentc(request):
 		messages.success(request, 'Complete your payment process to register for courses')
 		return redirect('/studentp')
 
+
 def sfinal(request):
 	if request.session['money_paid']==True and request.session['freeze']==False:	#add here if registration is complete. If yes - redirect to other page
 		id1=request.session['s_id']
@@ -341,7 +345,11 @@ def sfinal(request):
 		if sem==8:
 			mentor=q1.sem8
 		mentor1=mentor.all()
-		q2=fulldetail.objects.get(id1=id1)
+		try:
+			q2=fulldetail.objects.get(id1=id1)
+		except ObjectDoesNotExist:
+			messages.success(request,"Your request was Rejected by Faculty Mentor. Register Again!")
+			return redirect('/studentc')
 		q3=q2.courses.all()
 		if request.method=="POST":
 			messages.success(request,"Request sent to Faculty Advisor")
@@ -378,7 +386,7 @@ def confirmed(request):
 		mentor1=mentor.all()
 		q2=final_fulldetail.objects.get(id1=id1)
 		q3=q2.courses.all()
-		return render(request,'app/reg_complete.html',{'courses':q3,'mentor':mentor1[0]})
+		return render(request,'app/reg_complete.html',{'student':s1,'courses':q3,'mentor':mentor1[0]})
 	else:
 		messages.success(request, 'Complete your payment process first')
 		return redirect('/studentp')
@@ -413,3 +421,7 @@ def logout_f(request):
 	else:
 		messages.success(request,"Login first")
 	return redirect('/')
+
+def course_info(request):
+	crs=course.objects.all()
+	return render(request,"app/course_info.html",{'courses':crs})

@@ -1,13 +1,33 @@
 {% extends "app/base.html" %}
 {% block content %}
+<nav>
+    <div class="nav-wrapper">
+      IIT Jodhpur Registration Portal
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/smessage">Inbox</a></li>
+        <li><a href="/logout_s">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
+<div class="final">
 <div class="container">
 <script>
 	function func()
 	{
 		window.print();
 	}
-</script>
-<table border=1>
+
+</script><br>
+<h4 align="center">Courses Registered</h4>
+<h5>
+Name: {{student.name}}<br>
+Semester: {{student.semester}}<br>
+Branch: {{student.branch}}<br>
+Roll No: {{student.id1}}<br>
+Email: {{student.email}}<br>
+</h5>
+<br>
+<table class="striped" border=1>
 <tr>
 <th>Code</th>
 <th>Course Name</th>
@@ -20,7 +40,8 @@
 <td>{{c.ltp}}</td>
 </tr>
 {%endfor%}
-</table>
-<h2>Request granted by Dr.{{mentor.name}}</h2>
+</table><br>
+<h4>Request granted by Dr.{{mentor.name}}</h4>
 <button onclick="func()">Print</button></div>
+</div>
 {%endblock%}

@@ -1,5 +1,17 @@
 {% extends "app/base.html" %}
 {% block content %}
+<nav>
+    <div class="nav-wrapper">
+      IIT Jodhpur Registration Portal
+         <div class="brand-logo center">Dr. {{fac.name}}</div>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="/facultyp">Elective Request</a></li>
+        <li ><a href="/facultyc">Mentor Request</a></li>
+        <li class="active"><a href="/student_course">Course Teaching</a></li>
+        <li><a href="/logout_f">Logout</a></li>
+      </ul>
+    </div>
+  </nav>
 <div class="container">
 <div class="collection">
 {%for c in courses%}

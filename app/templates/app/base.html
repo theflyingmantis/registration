@@ -21,6 +21,15 @@
    color: green;
 }
 
+.fif{display: inline;}
+
+div.final {
+    background-color: lightgrey;
+    padding: 25px;
+    border: 25px solid navy;
+    margin: 25px;
+}
+
 :-moz-placeholder { /* Firefox 18- */
    color: green;  
 }
@@ -34,19 +43,19 @@
 }
 	</style>
 </head>
-<body background="{% static 'app/images/1.jpg'%}">
-<img class="ex1" src="{% static 'app/images/IITJ_Logo.png'%}" height=100 width=100 margin-left="20px">
+<!-- <body background="{% static 'app/images/1.jpg'%}"> -->
+<body>
 <script type="text/javascript" src="{% static 'app/jquery-2.1.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'app/js/materialize.js' %}"></script>
 {% block content %}{% endblock %}
 <center>
-<h2>{% if messages %}
+<h4>{% if messages %}
 <div class="messages">
     {% for message in messages %}
     {{ message }}<br>
     {% endfor %}
 </div>
-{% endif %}</h2>
+{% endif %}</h4>
 </center>
 
   <script>

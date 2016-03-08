@@ -3,16 +3,19 @@
 
 <nav>
     <div class="nav-wrapper">
-      <a href="#" class="brand-logo">Logo</a>
+      IIT Jodhpur Registration Portal
       <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="sass.html">Sass</a></li>
-        <li><a href="badges.html">Components</a></li>
-        <li><a href="collapsible.html">JavaScript</a></li>
+      <li class="active"><a href="/studentp">Pay Fees</a></li>
+        <li><a href="/smessage">Inbox</a></li>
+        <li><a href="/studentc">Register for courses</a></li>
+        <li><a href="/sfinal">Request status</a></li>
+        <li><a href="/logout_s">Logout</a></li>
       </ul>
     </div>
   </nav>
-	<h5>Welcome {{student.name}}</h5>
-	<table class="striped">
+  <div class="container">
+	<h5>Welcome {{student.name}}</h5><br>
+	<table class="highlight">
 	{%if mess_dues or lib_dues or reg_fees or mess_fees %}
 	<tr><th>Payment Left</th><th>Amount</th></tr>
 	{%endif%}
@@ -55,7 +58,9 @@ function checkSubmitStatus(){
 }
 checkSubmitStatus();
 	</script>
+	
 	{%if mess_dues or lib_dues or reg_fees or mess_fees %}
+	<br><h4>Pay Fees</h4><br>
 		<form method="POST" name="fees" onsubmit="storeInSession()">
 		{% csrf_token %}
 			<select name="type" required>
@@ -76,5 +81,5 @@ checkSubmitStatus();
 		  <input type="submit" value="Pay">
 		</form>
 	{%endif%}
-
+</div>
 {%endblock%}
