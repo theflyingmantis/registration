@@ -32,7 +32,7 @@
 <tr bgcolor="#90caf9"><th>Course Code</th><th>Course Name</th><th>Course Instructor</th><th>About the course</th></tr>
 {%for c in cm_courses%}
 <tr>
-<tr><td>{{c.code}}</td><td>{{c.name}}</td><td>{{c.faculty_name}}</td><td>{{c.note}}</td></tr>
+<tr><td>{{c.code}}</td><td>{{c.name}}</td><td>Dr {{c.faculty_name}}</td><td>{{c.note}}</td></tr>
 </tr>
 {%endfor%}
 </table>

@@ -5,11 +5,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from app.models import *
 from django.contrib import messages
 
-def index(request):
+def index(request):	#Base Url - Home page 
 	c = {}
 	error=None
 	c.update(csrf(request))
-	request.session['freeze']=False
+	request.session['freeze']=False				#Sessions Created
 	request.session['admin_logged'] = False
 	request.session['f_logged'] = False
 	request.session['s_logged'] = False
@@ -52,7 +52,7 @@ def index(request):
 
 	return render(request,'app/index.html',{'error':error})
 
-def admin_login(request):
+def admin_login(request):	#To check for registered Students
 	if request.method=="POST":
 		name=request.POST.get('name', '')
 		password=request.POST.get('password', '')
@@ -63,24 +63,16 @@ def admin_login(request):
 			messages.success(request, 'Wrong Username/Password')
 	return render(request,'app/admin_login.html')
 
-def admin_settings(request):
+def admin_settings(request):	#To check for registered Students
 	if request.session['admin_logged'] == True:
 		students=student.objects.filter(reg_done=1)
-		# if request.method=="POST":
-		# 	type1=request.POST.get('type', '')
-		# 	if type1=="on":
-		# 		request.session['freeze']=True
-		# 		messages.success(request,"Freeze Registration")
-		# 	else:
-		# 		request.session['freeze']=False
-		# 		messages.success(request,"Unfreezed Registration")
 		return render(request,'app/admin_settings.html',{'students':students})
 	else:
 		messages.success(request, '@ Admin. Please Login first to authenticate yourself !')
 		return redirect('/')
 
 
-def facultyp(request):
+def facultyp(request):	#Faculty Elective request
 	if request.session['f_logged']==True:
 		pk=request.session['f_id']
 		fac=faculty.objects.get(pk=pk)
@@ -111,10 +103,11 @@ def facultyp(request):
 				print "NO is there"
 				q2=request1.objects.get(id1=id1,course_name=cname)
 				q2.delete()
+				#c1=course.objects.get(name=cname)
 				if msg=='':
 					sname=fac.name#Sender's Name
-					msg="Request Declined for "+c1.name
-					n1=message(receiver=id1,sender=pk,msg=msg,sname=sname)
+					msg1="Request Declined"
+					n1=message(receiver=id1,sender=pk,msg=msg1,sname=sname)
 					n1.save()
 			
 			print "msg: " + msg
@@ -132,7 +125,7 @@ def facultyp(request):
 		messages.success(request, 'Please Login First')
 		return redirect('/')
 
-def student_course(request):
+def student_course(request):	#Displays students in particular course
 	if request.session['f_logged']==True:
 		pk=request.session['f_id']
 		fac=faculty.objects.get(pk=pk)
@@ -144,7 +137,7 @@ def student_course(request):
 		messages.success(request, 'Please Login First')
 		return redirect('/')
 		
-def StudentsInCourse(request,name):
+def StudentsInCourse(request,name):	#Display PArticular Student	
 	if request.session['f_logged']==True:
 		pk=request.session['f_id']
 		fac=faculty.objects.get(pk=pk)
@@ -156,7 +149,7 @@ def StudentsInCourse(request,name):
 		return redirect('/')
 
 
-def facultyc(request):
+def facultyc(request):	#Faculty Mentor Request
 	if request.session['f_logged']==True:
 		pk=request.session['f_id']
 		fac=faculty.objects.get(pk=pk)
@@ -167,7 +160,7 @@ def facultyc(request):
 		return redirect('/')
 
 
-def ffinal(request,id1):
+def ffinal(request,id1):	#Faculty Mentor Request
 	if request.session['f_logged']==True:
 		pk=request.session['f_id']
 		fac=faculty.objects.get(pk=pk)
@@ -201,7 +194,7 @@ def ffinal(request,id1):
 		messages.success(request, 'Please Login First')
 		return redirect('/')
 
-def smessage(request):
+def smessage(request):	#Shows messages of students
 	if request.session['s_logged']==True:
 		pk1=request.session['s_id']
 		q1=message.objects.filter(receiver=pk1)
@@ -215,7 +208,7 @@ def smessage(request):
 		messages.success(request, 'Please Login First')
 		return redirect('/')
 
-def studentp(request):
+def studentp(request):	#Student Payment Portal
 	if request.session['s_logged']==True:
 		pk1=request.session['s_id']
 		q=student.objects.get(id=pk1)
@@ -249,7 +242,7 @@ def studentp(request):
 
 
 
-def studentc(request):
+def studentc(request):	#Student Registration Courses
 	if request.session['money_paid']==True and request.session['freeze']==False:
 		c = {}	
 		c.update(csrf(request))
@@ -318,7 +311,7 @@ def studentc(request):
 		return redirect('/studentp')
 
 
-def sfinal(request):
+def sfinal(request):	#Final Page to be printed
 	if request.session['money_paid']==True and request.session['freeze']==False:	#add here if registration is complete. If yes - redirect to other page
 		id1=request.session['s_id']
 		
@@ -360,7 +353,7 @@ def sfinal(request):
 		messages.success(request, 'Complete your payment process to register for courses')
 		return redirect('/studentp')
 
-def confirmed(request):
+def confirmed(request):	#If confirmed - Show final page
 	if request.session['money_paid']==True:
 		id1=request.session['s_id']
 		s1=student.objects.get(pk=id1)
@@ -392,7 +385,7 @@ def confirmed(request):
 		return redirect('/studentp')
 
 
-def logout_a(request):
+def logout_a(request):	#logout Admin
 	error=None
 	if request.session['a_logged']==True:
 		del request.session['a_logged']
@@ -402,7 +395,7 @@ def logout_a(request):
 	return redirect('/')
 
 
-def logout_s(request):
+def logout_s(request):	#logout Student
 	error=None
 	if request.session['s_logged']==True:
 		del request.session['s_logged']
@@ -412,7 +405,7 @@ def logout_s(request):
 		messages.success(request,"Login first")
 	return redirect('/')
 
-def logout_f(request):
+def logout_f(request):	#logout Faculty
 	error=None
 	if request.session['f_logged']==True:
 		del request.session['f_logged']
@@ -422,6 +415,6 @@ def logout_f(request):
 		messages.success(request,"Login first")
 	return redirect('/')
 
-def course_info(request):
+def course_info(request):	#info about particular course
 	crs=course.objects.all()
 	return render(request,"app/course_info.html",{'courses':crs})

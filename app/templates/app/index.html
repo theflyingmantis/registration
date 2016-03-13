@@ -38,7 +38,7 @@
 <img class="ex1" src="{% static 'app/images/IITJ_Logo.png' %}" height=100 width=100>
 <script type="text/javascript" src="{% static 'app/jquery-2.1.1.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'app/js/materialize.js' %}"></script>
-<center>
+<center><h4>IIT Jodhpur Academic Registration</h4>
 <h2>Sign In</h2><br>
 </center>
 
@@ -57,7 +57,10 @@ Role:<select name="type" required>
     <option value="student">Student</option>
     <option value="faculty">Faculty</option>		<!-- Also Can look for Radio Buttons here . See later-->
   </select><br>
-<center><input type="submit" value="Login"></div></center>
+<center><!-- 
+<input type="submit" value="Login"> -->
+<button class="btn waves-effect waves-light" type="submit">Login</button>
+</div></center>
 </form>
 {% if error %}
 <script type="text/javascript">	
@@ -65,13 +68,13 @@ alert('{{error}}');
 </script>
 {% endif %}
 <center>
-<h2>{% if messages %}
+{% if messages %}<div class="card-panel pink accent-3"><h4>
 <div class="messages">
     {% for message in messages %}
     {{ message }}<br>
     {% endfor %}
 </div>
-{% endif %}</h2>
+{% endif %}</h4></div>
 </center>
 
   <script>

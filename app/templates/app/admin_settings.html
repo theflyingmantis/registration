@@ -13,13 +13,16 @@
 	<input type="submit" value="Freeze/Unfreeze Registration">
 </form> -->
   <h2>Registration Done for these students :-</h2>
-<table>
+<table class="striped">
+{%if students%}
+<tr><th>Roll No.</th><th>Name</th><th>Email</th></tr>
 {%for s in students%}
 <tr><td>{{s.id1}}</td>
 <td>{{s.name}}</td>
 <td>{{s.email}}</td>
 </tr>
 {%endfor%}
+{%endif%}
 </table>
 
 {% endblock %}

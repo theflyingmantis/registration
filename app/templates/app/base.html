@@ -49,13 +49,14 @@ div.final {
 <script type="text/javascript" src="{% static 'app/js/materialize.js' %}"></script>
 {% block content %}{% endblock %}
 <center>
-<h4>{% if messages %}
+<div class="container">
+{% if messages %}<div class="card-panel teal lighten-2"><h4>
 <div class="messages">
     {% for message in messages %}
     {{ message }}<br>
     {% endfor %}
 </div>
-{% endif %}</h4>
+{% endif %}</h4></div>
 </center>
 
   <script>
@@ -63,5 +64,6 @@ div.final {
         $('select').material_select();
     });
   </script>
+  </div>
 </body>
 </html>

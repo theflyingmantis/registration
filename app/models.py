@@ -4,7 +4,7 @@ from django.db import models
 from app.models import *
 
 
-class student(models.Model):
+class student(models.Model):		#Base Class Student which contains all details about student 1
 	name=models.CharField(max_length=30)
 	email=models.CharField(max_length=30,null=True)
 	id1=models.CharField(max_length=10)
@@ -20,13 +20,7 @@ class student(models.Model):
 		a=self.name
 		return a
 
-# class freeze(models.Model):
-# 	status=models.CharField(max_length=30,default="U")
-# 	def __str__(self):
-# 		a=self.status
-# 		return a
-
-class message(models.Model):
+class message(models.Model):	#Stores Message
 	receiver=models.CharField(max_length=30)
 	sender=models.CharField(max_length=30)
 	sname=models.CharField(max_length=30,blank=True)
@@ -34,7 +28,7 @@ class message(models.Model):
 	def __str__(self):
 		return self.msg+" "+self.sname
 
-class course(models.Model):
+class course(models.Model):	#Stores Course
     name=models.CharField(max_length=30)
     code=models.CharField(max_length=10)
     students=models.ManyToManyField(student,blank=True)
@@ -45,7 +39,7 @@ class course(models.Model):
     def __str__(self):
         return self.name
 
-class fulldetail(models.Model):
+class fulldetail(models.Model):	#As Temporary Model
 	id1=models.IntegerField()
 	name=models.CharField(max_length=30,null=True)
 	semester=models.IntegerField(null=True)
@@ -56,14 +50,14 @@ class fulldetail(models.Model):
 		return name.name
 
 
-class final_fulldetail(models.Model):
+class final_fulldetail(models.Model):	#Final Database record for courses of a student
 	id1=models.IntegerField()
 	courses=models.ManyToManyField(course,blank=True)
 	def __str__(self):
 		name=student.objects.get(pk=self.id1)
 		return name.name
 
-class request1(models.Model):
+class request1(models.Model):	#database of request
     id1=models.IntegerField() #student pk
     name=models.CharField(max_length=30,null=True)
     semester=models.IntegerField(null=True)
@@ -75,7 +69,7 @@ class request1(models.Model):
     	name=student.objects.get(pk=self.id1)
     	return name.name+" * "+self.course_name
 
-class faculty(models.Model):
+class faculty(models.Model):	#Faculty Database
 	name=models.CharField(max_length=30)
 	mentor=models.BooleanField(default=False)
 	id1=models.CharField(max_length=10)
@@ -87,7 +81,7 @@ class faculty(models.Model):
 		return self.name
 
 
-class branch_mentor(models.Model):
+class branch_mentor(models.Model):	#Stores Branch mentor per semester
  	branch=models.CharField(max_length=10)
  	sem1=models.ManyToManyField(faculty,related_name='sem1',blank=True)
  	sem2=models.ManyToManyField(faculty,related_name='sem2',blank=True)
@@ -100,7 +94,7 @@ class branch_mentor(models.Model):
 	def __str__(self):
 		return self.branch+"- mentor"
  
-class compulsary(models.Model):
+class compulsary(models.Model):	#Compulsary Courses
  	branch=models.CharField(max_length=10)
  	sem1=models.ManyToManyField(course,related_name='sem1',blank=True)
  	sem2=models.ManyToManyField(course,related_name='sem2',blank=True)
