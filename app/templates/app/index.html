@@ -41,12 +41,12 @@
 <center><h4>IIT Jodhpur Academic Registration</h4>
 <h2>Sign In</h2><br>
 </center>
-
+<center><h4>
 <font color="red">
 	{%if error %}
 	{{error}}
 	{% endif %}
-</font></center>
+</font></h4></center>
 
 <form method="POST" name="login">
 {% csrf_token %}
@@ -62,11 +62,6 @@ Role:<select name="type" required>
 <button class="btn waves-effect waves-light" type="submit">Login</button>
 </div></center>
 </form>
-{% if error %}
-<script type="text/javascript">	
-alert('{{error}}');		
-</script>
-{% endif %}
 <center>
 {% if messages %}<div class="card-panel pink accent-3"><h4>
 <div class="messages">

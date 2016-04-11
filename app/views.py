@@ -9,7 +9,8 @@ def index(request):	#Base Url - Home page
 	c = {}
 	error=None
 	c.update(csrf(request))
-	request.session['freeze']=False				#Sessions Created
+	request.session['freeze']=False	
+	request.session['accounts']=False				#Sessions Created
 	request.session['admin_logged'] = False
 	request.session['f_logged'] = False
 	request.session['s_logged'] = False
@@ -219,15 +220,23 @@ def studentp(request):	#Student Payment Portal
 		if request.method=="POST":
 			type1=request.POST.get('type', '')
 			if type1=="mess_dues":
+				n1=accounts(name=q.name,roll=q.id1,typefees="Mess Dues",amount=mess_dues)
+				n1.save()
 				q.mess_dues=0
 				q.save()
 			if type1=="mess_fees":
+				n1=accounts(name=q.name,roll=q.id1,typefees="Mess Fees",amount=mess_fees)
+				n1.save()
 				q.mess_fees=0
 				q.save()
 			if type1=="lib_dues":
+				n1=accounts(name=q.name,roll=q.id1,typefees="Library Dues",amount=lib_dues)
+				n1.save()
 				q.lib_dues=0
 				q.save()
 			if type1=="reg_fees":
+				n1=accounts(name=q.name,roll=q.id1,typefees="Registration Fees",amount=reg_fees)
+				n1.save()
 				q.reg_fees=0
 				q.save()
 		if q.mess_dues==0 and q.mess_fees==0 and q.reg_fees==0 and q.lib_dues==0:
@@ -418,3 +427,36 @@ def logout_f(request):	#logout Faculty
 def course_info(request):	#info about particular course
 	crs=course.objects.all()
 	return render(request,"app/course_info.html",{'courses':crs})
+
+def timetable(request):
+	return render(request,'app/timetable.html')
+
+def accounts_login(request):
+	if request.method=="POST":
+		username=request.POST.get('name', '')
+		password=request.POST.get('pass','')
+		if username=="accounts" and password=="pass":
+			request.session['accounts']=True
+			return redirect('/accounts_details')
+		else:
+			messages.success(request,"Wrong Credentials")
+		#do something
+	return render(request,'app/accounts_login.html')
+
+def accounts_logout(request):
+	if request.session['accounts']==True:
+		del request.session['accounts']
+		#del request.session['f_id']
+		messages.success(request,"Thanks for using portal!")
+	else:
+		messages.success(request,"Login first")
+	return redirect('/')
+
+def  accounts_details(request):
+	if request.session['accounts']==True:
+		# something here
+		return render(request,'app/account_details.html',{})
+	else:
+		messages.success(request,"Login first")
+		return redirect('/')
+
