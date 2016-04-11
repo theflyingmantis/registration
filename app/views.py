@@ -219,23 +219,24 @@ def studentp(request):	#Student Payment Portal
 		reg_fees=q.reg_fees
 		if request.method=="POST":
 			type1=request.POST.get('type', '')
-			if type1=="mess_dues":
-				n1=accounts(name=q.name,roll=q.id1,typefees="Mess Dues",amount=mess_dues)
+			debitcard=request.POST.get('debitcard','')
+			if type1=="mess_dues" and q.mess_dues!=0:
+				n1=accounts(name=q.name,roll=q.id1,typefees="Mess Dues",amount=mess_dues,cardno=debitcard)
 				n1.save()
 				q.mess_dues=0
 				q.save()
-			if type1=="mess_fees":
-				n1=accounts(name=q.name,roll=q.id1,typefees="Mess Fees",amount=mess_fees)
+			if type1=="mess_fees" and q.mess_fees!=0:
+				n1=accounts(name=q.name,roll=q.id1,typefees="Mess Fees",amount=mess_fees,cardno=debitcard)
 				n1.save()
 				q.mess_fees=0
 				q.save()
-			if type1=="lib_dues":
-				n1=accounts(name=q.name,roll=q.id1,typefees="Library Dues",amount=lib_dues)
+			if type1=="lib_dues" and q.lib_dues!=0:
+				n1=accounts(name=q.name,roll=q.id1,typefees="Library Dues",amount=lib_dues,cardno=debitcard)
 				n1.save()
 				q.lib_dues=0
 				q.save()
-			if type1=="reg_fees":
-				n1=accounts(name=q.name,roll=q.id1,typefees="Registration Fees",amount=reg_fees)
+			if type1=="reg_fees" and q.reg_fees!=0:
+				n1=accounts(name=q.name,roll=q.id1,typefees="Registration Fees",amount=reg_fees,cardno=debitcard)
 				n1.save()
 				q.reg_fees=0
 				q.save()
@@ -454,9 +455,13 @@ def accounts_logout(request):
 
 def  accounts_details(request):
 	if request.session['accounts']==True:
-		# something here
-		return render(request,'app/account_details.html',{})
+		acc=accounts.objects.all()
+		print acc
+		return render(request,'app/accounts_details.html',{'accounts':acc})
 	else:
 		messages.success(request,"Login first")
 		return redirect('/')
 
+
+def fee_structure(request):
+	return render(request,'app/fee_structure.html')

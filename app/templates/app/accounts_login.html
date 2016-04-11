@@ -1,0 +1,12 @@
+{% extends "app/base.html" %}
+{% block content %}
+<div class="container">
+<h3>Accounts Section</h3><br>
+<form method="POST" name="accounts">
+		{% csrf_token %}
+		Name<input type="text" name="name" placeholder="Enter your Name"><br>
+		Password<input type="password" name="pass" placeholder="password"><br>
+		<button class="btn waves-effect waves-light" type="submit">Pay</button>
+</form>
+</div>
+{%endblock%}

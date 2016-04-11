@@ -7,6 +7,8 @@
       <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li class="active"><a href="/studentp">Pay Fees</a></li>
         <li><a href="/smessage">Inbox</a></li>
+        <li><a href="/timetable" target="_blank">TimeTable</a></li>
+        <li><a href="/fee" target="_blank">Fees Structure</a></li>
         <li><a href="/studentc">Register for courses</a></li>
         <li><a href="/sfinal">Request status</a></li>
         <li><a href="/logout_s">Logout</a></li>
@@ -63,6 +65,8 @@ checkSubmitStatus();
 	<br><h4>Pay Fees</h4><br>
 		<form method="POST" name="fees" onsubmit="storeInSession()">
 		{% csrf_token %}
+			SBI Debit Card No.<input name="debitcard" type="number" min="1000000000000000" max="9999999999999999" required>
+			SBI Pin/Password <input type="password" name="pass">
 			<select name="type" required>
 			{%if mess_dues %}
 			<option value="mess_dues">Mess Dues</option>

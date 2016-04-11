@@ -21,6 +21,10 @@ urlpatterns = [
     url(r'^logout_a/$',views.logout_a,name="logout_a"),
     url(r'^course_info/$',views.course_info,name="course_info"),
     url(r'^timetable/$',views.timetable,name="timetable"),
+    url(r'^accounts/$',views.accounts_login,name="accounts_login"),
+    url(r'^accounts_logout/$',views.accounts_logout,name='accounts_logout'),
+    url(r'^accounts_details/$',views.accounts_details,name="accounts_details"),
+    url(r'^fee/$',views.fee_structure,name='fee_structure'),
 ]
 
 

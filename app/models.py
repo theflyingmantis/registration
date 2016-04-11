@@ -36,6 +36,10 @@ class accounts(models.Model):	#stores accounts data
 	roll=models.CharField(max_length=30)
 	typefees=models.CharField(max_length=30)
 	amount=models.PositiveIntegerField()
+	cardno=models.BigIntegerField(default=0)
+	def __str__(self):
+		a=self.name+" "+self.typefees
+		return a
 
 class course(models.Model):	#Stores Course
     name=models.CharField(max_length=30)

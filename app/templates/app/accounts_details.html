@@ -1,0 +1,13 @@
+{% extends "app/base.html" %}
+{% block content %}
+<div class="container">
+<h3>Accounts Section</h3><div align="right"><a href="/accounts_logout">Logout</a></div><br>
+<table class="striped" border=1>
+<tr><th>Name</th><th>Roll No.</th><th>Fee Type</th><th>Amount</th><th>Debit Card No.</th></tr>
+{%for course in accounts%}
+<tr><td>{{course.name}}</td><td>{{course.roll}}</td><td>{{course.typefees}}</td><td>{{course.amount}}</td><td>{{course.cardno}}</td></tr>
+{%endfor%}
+</table>
+
+</div>
+{%endblock%}
